@@ -1,0 +1,1874 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GL Workspace</title>
+  <style>
+    :root {
+      --bg: #eef2f7;
+      --card: #ffffff;
+      --line: #d8e0eb;
+      --text: #0f172a;
+      --muted: #64748b;
+      --accent: #0ea5e9;
+      --nav: #0b1220;
+    }
+
+    @media print {
+
+      body,
+      .layout,
+      .main {
+        display: block !important;
+        visibility: visible !important;
+      }
+    }
+  </style>
+  <html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GL Workspace</title>
+    <style>
+      :root {
+        --bg: #eef2f7;
+        --card: #ffffff;
+        --line: #d8e0eb;
+        --text: #0f172a;
+        --muted: #64748b;
+        --accent: #0ea5e9;
+        --nav: #0b1220;
+        --nav-muted: #94a3b8;
+        --nav-active: #e0f2fe;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Tahoma, sans-serif;
+        background: linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
+        color: var(--text);
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        min-height: 100vh;
+      }
+
+      .layout.sidebar-hidden {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        background: var(--nav);
+        color: #fff;
+        padding: 20px 14px;
+        border-right: 1px solid #111827;
+      }
+
+      .brand {
+        font-size: 18px;
+        font-weight: 700;
+        padding: 8px 10px 18px;
+        border-bottom: 1px solid #1f2937;
+        margin-bottom: 12px;
+      }
+
+      .nav-btn {
+        width: 100%;
+        text-align: left;
+        background: transparent;
+        border: 1px solid transparent;
+        color: var(--nav-muted);
+        padding: 10px 12px;
+        border-radius: 10px;
+        margin-bottom: 8px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .nav-btn.active {
+        background: var(--nav-active);
+        color: #0c4a6e;
+        border-color: #bae6fd;
+        font-weight: 600;
+      }
+
+      .main {
+        padding: 24px;
+      }
+
+      .hamburger {
+        width: 36px;
+        height: 36px;
+        border: 1px solid #cbd5e1;
+        background: #fff;
+        color: #0f172a;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 18px;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .topbar {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: 12px;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 10px 12px;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+      }
+
+      .topbar input {
+        flex: 1;
+        padding: 8px 10px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 13px;
+        background: #fff;
+      }
+
+      .topbar select {
+        flex: 1;
+        padding: 8px 10px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 13px;
+        background: #fff;
+      }
+
+      .panel {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 8px 28px rgba(15, 23, 42, 0.06);
+      }
+
+      .panel-header {
+        padding: 16px 18px;
+        border-bottom: 1px solid var(--line);
+        background: #f8fbff;
+      }
+
+      .title {
+        margin: 0;
+        font-size: 22px;
+      }
+
+      .subtitle {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .controls {
+        display: grid;
+        grid-template-columns: repeat(8, minmax(120px, 1fr));
+        gap: 10px;
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--line);
+        background: #fcfdff;
+      }
+
+      .controls input,
+      .controls select {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 13px;
+        background: #fff;
+      }
+
+      .toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 8px 10px;
+        font-size: 13px;
+        background: #fff;
+        white-space: nowrap;
+      }
+
+      .toggle input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        margin: 0;
+        accent-color: #0ea5e9;
+      }
+
+      .summary {
+        display: flex;
+        gap: 20px;
+        padding: 12px 18px;
+        border-bottom: 1px solid var(--line);
+        background: #f8fafc;
+        font-size: 14px;
+      }
+
+      .info-strip {
+        display: flex;
+        gap: 18px;
+        padding: 10px 18px;
+        border-bottom: 1px solid var(--line);
+        background: #f8fafc;
+        font-size: 13px;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+      }
+
+      .table-scroll {
+        max-height: 66vh;
+        overflow: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 980px;
+      }
+
+      thead th {
+        background: var(--accent);
+        color: #fff;
+        padding: 11px;
+        text-align: left;
+        font-size: 13px;
+        white-space: nowrap;
+        position: sticky;
+        top: 0;
+        z-index: 3;
+      }
+
+      thead tr:nth-child(2) th {
+        top: 42px;
+        z-index: 2;
+        background: #f0f9ff;
+      }
+
+      .bank-table {
+        border: 1px solid #d9dfe8;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #fff;
+      }
+
+      .bank-table thead th {
+        background: #f3f5f8;
+        color: #1f334d;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-weight: 600;
+        font-size: 12px;
+        border-bottom: 1px solid #d9dfe8;
+      }
+
+      .bank-table thead tr:nth-child(2) th {
+        background: #fafbfc;
+        top: 44px;
+      }
+
+      .bank-table tbody td {
+        border-bottom: 1px solid #e5eaf1;
+        border-right: 1px solid #eef2f7;
+      }
+
+      .bank-table tbody tr:nth-child(even) td {
+        background: #fcfdff;
+      }
+
+      .bank-table tbody tr:hover td {
+        background: #f5faff;
+      }
+
+      .th-flex {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        position: relative;
+      }
+
+      .filter-icon {
+        color: #94a3b8;
+        font-size: 12px;
+        flex: 0 0 auto;
+        cursor: pointer;
+        border: 1px solid #d1d9e6;
+        border-radius: 6px;
+        padding: 2px 6px;
+        background: #f8fafc;
+      }
+
+      .filter-icon.active {
+        color: #0ea5e9;
+        border-color: #7dd3fc;
+        background: #e0f2fe;
+      }
+
+      .filter-popover {
+        position: absolute;
+        top: 30px;
+        right: 0;
+        width: 230px;
+        background: #fff;
+        border: 1px solid #d1d9e6;
+        border-radius: 10px;
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.15);
+        padding: 10px;
+        z-index: 20;
+        text-transform: none;
+        letter-spacing: normal;
+        color: #0f172a;
+      }
+
+      .filter-popover .label {
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: #334155;
+      }
+
+      .filter-popover input {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid #93c5fd;
+        border-radius: 8px;
+        outline: none;
+        font-size: 13px;
+        margin-bottom: 8px;
+      }
+
+      .filter-popover .actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .filter-link-btn {
+        background: transparent;
+        border: none;
+        color: #0ea5e9;
+        cursor: pointer;
+        padding: 0;
+        font-size: 13px;
+      }
+
+      .filter-link-btn.danger {
+        color: #ef4444;
+      }
+
+      .edit-modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.35);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 60;
+        padding: 20px;
+      }
+
+      .edit-modal {
+        width: min(1100px, 96vw);
+        max-height: 88vh;
+        overflow: auto;
+        background: #fff;
+        border: 1px solid #d8e0eb;
+        border-radius: 12px;
+        box-shadow: 0 14px 40px rgba(15, 23, 42, 0.25);
+      }
+
+      .edit-modal-header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: #f8fafc;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 12px 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .edit-grid {
+        padding: 14px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(220px, 1fr));
+        gap: 10px 12px;
+      }
+
+      .edit-field {
+        display: grid;
+        gap: 4px;
+      }
+
+      .edit-field label {
+        font-size: 12px;
+        color: #475569;
+        font-weight: 600;
+      }
+
+      .edit-field input {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 13px;
+      }
+
+      tbody td {
+        padding: 10px 11px;
+        border-bottom: 1px solid var(--line);
+        font-size: 14px;
+        vertical-align: top;
+      }
+
+      tbody tr:hover {
+        background: #f8fafc;
+      }
+
+      .num {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .status {
+        padding: 12px 18px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(160px, 1fr));
+        gap: 12px;
+        padding: 18px;
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 12px;
+        background: #fff;
+      }
+
+      .card .k {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .card .v {
+        font-size: 22px;
+        font-weight: 700;
+        margin-top: 4px;
+      }
+
+      .list {
+        padding: 18px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .list-item {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 10px 12px;
+        background: #fff;
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      .btn {
+        border: 1px solid #93c5fd;
+        background: #e0f2fe;
+        color: #0369a1;
+        border-radius: 8px;
+        padding: 8px 10px;
+        cursor: pointer;
+        font-size: 13px;
+      }
+
+      .settings-form {
+        display: grid;
+        grid-template-columns: 1fr 2fr auto;
+        gap: 10px;
+        padding: 16px 18px;
+        border-bottom: 1px solid var(--line);
+        background: #fcfdff;
+      }
+
+      .settings-form input {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 13px;
+      }
+
+      @media (max-width: 1080px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          border-right: none;
+          border-bottom: 1px solid #1f2937;
+        }
+
+        .controls {
+          grid-template-columns: repeat(2, minmax(120px, 1fr));
+        }
+
+        .cards {
+          grid-template-columns: repeat(2, minmax(120px, 1fr));
+        }
+
+        .settings-form {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media print {
+
+        .sidebar,
+        .topbar,
+        .controls,
+        .status,
+        .summary,
+        .nav-btn,
+        .btn,
+        .settings-form,
+        .edit-modal-backdrop,
+        .panel:not(.export-table-block.print-area) {
+          display: none !important;
+        }
+
+        .export-table-block.print-area {
+          display: block !important;
+          position: static !important;
+          background: #fff !important;
+          box-shadow: none !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          width: 100% !important;
+          border: none !important;
+          page-break-after: always;
+        }
+
+        .export-table-block.print-area .table-wrap {
+          overflow: visible !important;
+        }
+
+        .export-table-block.print-area table {
+          min-width: 0 !important;
+          width: 100% !important;
+        }
+
+        .export-table-block.print-area th,
+        .export-table-block.print-area td {
+          font-size: 12px !important;
+          padding: 6px 8px !important;
+        }
+
+        @page {
+          margin: 10mm;
+        }
+      }
+    </style>
+  </head>
+
+<body>
+  <div id="app"></div>
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    const { useEffect, useMemo, useState } = React;
+
+    const DEFAULT_SPREADSHEET_ID = "1ALS7m3wpPhJsX2CXGiCid_AJOv0zX6vD49OYiOIcZ90";
+    const STORAGE_PROFILES = "spreadsheetProfiles";
+    const STORAGE_ACTIVE_PROFILE = "activeSpreadsheetProfileId";
+
+    function withSpreadsheetId(url, spreadsheetId) {
+      const sep = url.includes("?") ? "&" : "?";
+      return `${url}${sep}spreadsheetId=${encodeURIComponent(spreadsheetId)}`;
+    }
+
+    const API = {
+      gl: (source, spreadsheetId) => withSpreadsheetId(`/bukubesar?source=${encodeURIComponent(source)}`, spreadsheetId),
+      compare: (a, b, spreadsheetId) => withSpreadsheetId(`/compare?sourceA=${encodeURIComponent(a)}&sourceB=${encodeURIComponent(b)}`, spreadsheetId),
+      sheets: (spreadsheetId) => withSpreadsheetId("/sheets", spreadsheetId),
+      sheetPreview: (sheet, spreadsheetId, range = "A4:M") =>
+        withSpreadsheetId(`/sheet/preview?sheet=${encodeURIComponent(sheet)}&range=${encodeURIComponent(range)}`, spreadsheetId),
+      sheetUpdateRow: "/sheet/update-row",
+      exportCsv: (source, spreadsheetId) => withSpreadsheetId(`/export/bukubesar.csv?source=${encodeURIComponent(source)}`, spreadsheetId)
+    };
+
+    const navItems = [
+      { id: "dashboard", label: "Dashboard" },
+      { id: "gl", label: "General Ledger" },
+      { id: "compare", label: "Compare" },
+      { id: "sheets", label: "Sheets" },
+      { id: "bankTables", label: "Bank Tables" },
+      { id: "masterCoa", label: "Master COA" },
+      { id: "reports", label: "Reports" },
+      { id: "settings", label: "Settings" }
+    ];
+
+    function defaultProfiles() {
+      return [{ id: "default", name: "Default Sheet", spreadsheetId: DEFAULT_SPREADSHEET_ID }];
+    }
+
+    function loadProfiles() {
+      const raw = localStorage.getItem(STORAGE_PROFILES);
+      if (!raw) return defaultProfiles();
+      try {
+        const arr = JSON.parse(raw);
+        if (!Array.isArray(arr) || arr.length === 0) return defaultProfiles();
+        return arr.filter(p => p && p.id && p.name && p.spreadsheetId);
+      } catch {
+        return defaultProfiles();
+      }
+    }
+
+    function toNumber(v) {
+      const n = Number(v);
+      return Number.isFinite(n) ? n : 0;
+    }
+
+    function parseIDNumber(raw) {
+      const s = String(raw ?? "").trim();
+      if (!s) return 0;
+      const normalized = s.replace(/\./g, "").replace(",", ".");
+      const n = Number(normalized);
+      return Number.isFinite(n) ? n : 0;
+    }
+
+    function formatIDNumber(raw, decimals = 2) {
+      const n = parseIDNumber(raw);
+      return n.toLocaleString("id-ID", {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals
+      });
+    }
+
+    function toDisplayDateInput(raw) {
+      const d = parseDate(raw);
+      if (!d) return "";
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, "0");
+      const dd = String(d.getDate()).padStart(2, "0");
+      return `${yyyy}-${mm}-${dd}`;
+    }
+
+    function toSheetDate(raw) {
+      const d = parseDate(raw);
+      if (!d) return "";
+      const dd = String(d.getDate()).padStart(2, "0");
+      const mm = String(d.getMonth() + 1).padStart(2, "0");
+      const yyyy = d.getFullYear();
+      return `${dd}/${mm}/${yyyy}`;
+    }
+
+    function deriveNextNoUrut(dataRows) {
+      let maxNo = 0;
+      dataRows.forEach(row => {
+        const v = String(row?.[0] ?? "").trim();
+        const normalized = v.replace(/\./g, "").replace(",", ".");
+        const n = Math.floor(Number(normalized));
+        if (Number.isFinite(n) && n > maxNo) maxNo = n;
+      });
+      return maxNo + 1;
+    }
+
+    function deriveNextNoBukti(lastNoBukti, nextNoUrut) {
+      const base = String(lastNoBukti || "").trim();
+      if (!base) return `BK00/0000/${String(nextNoUrut).padStart(4, "0")}`;
+      const m = base.match(/^(.*?)(\d+)$/);
+      if (!m) return `${base}/${String(nextNoUrut).padStart(4, "0")}`;
+      const width = m[2].length;
+      return `${m[1]}${String(nextNoUrut).padStart(width, "0")}`;
+    }
+
+    function fmt(v) {
+      return toNumber(v).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function parseDate(raw) {
+      const s = String(raw || "").trim();
+      if (!s) return null;
+      const iso = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+      if (iso) return new Date(Number(iso[1]), Number(iso[2]) - 1, Number(iso[3]));
+      const slash = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})$/);
+      if (slash) {
+        let y = Number(slash[3]);
+        if (y < 100) y += 2000;
+        return new Date(y, Number(slash[2]) - 1, Number(slash[1]));
+      }
+      const d = new Date(s);
+      if (Number.isNaN(d.getTime())) return null;
+      return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    }
+
+    function flatten(data) {
+      if (Array.isArray(data)) return data;
+      if (data && typeof data === "object") return Object.values(data).flatMap(v => Array.isArray(v) ? v : []);
+      return [];
+    }
+
+    function useFetchJson(url) {
+      const [state, setState] = useState({ loading: true, error: "", data: null });
+      useEffect(() => {
+        if (!url) {
+          setState({ loading: false, error: "", data: null });
+          return;
+        }
+        let alive = true;
+        // Keep previous data while refetching to avoid table flicker/blank.
+        setState(prev => ({ loading: true, error: "", data: prev.data }));
+        fetch(url)
+          .then(r => {
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            return r.json();
+          })
+          .then(d => alive && setState({ loading: false, error: "", data: d }))
+          .catch(e => alive && setState({ loading: false, error: e.message || "failed", data: null }));
+        return () => { alive = false; };
+      }, [url]);
+      return state;
+    }
+
+    function Sidebar({ page, setPage }) {
+      return (
+        <aside className="sidebar">
+          <div className="brand">ValidTax</div>
+          {navItems.map(item => (
+            <button
+              key={item.id}
+              className={`nav-btn ${page === item.id ? "active" : ""}`}
+              onClick={() => setPage(item.id)}
+            >
+              {item.label}
+            </button>
+          ))}
+        </aside>
+      );
+    }
+
+    function GLPage({ spreadsheetId }) {
+      const [source, setSource] = useState("full");
+      const [from, setFrom] = useState("");
+      const [to, setTo] = useState("");
+      const [akun, setAkun] = useState("");
+      const [tanggal, setTanggal] = useState("");
+      const [noBukti, setNoBukti] = useState("");
+      const [ket, setKet] = useState("");
+      const [coaKosong, setCoaKosong] = useState(false);
+      const [hideZero, setHideZero] = useState(true);
+
+      const { loading, error, data } = useFetchJson(API.gl(source, spreadsheetId));
+      const rows = useMemo(() => flatten(data), [data]);
+
+      const filtered = useMemo(() => {
+        const f = parseDate(from);
+        const t = parseDate(to);
+        return rows.filter(row => {
+          const rd = parseDate(row.Tanggal);
+          if (f && (!rd || rd < f)) return false;
+          if (t && (!rd || rd > t)) return false;
+          if (coaKosong) {
+            const c = String(row.COA || "").trim().toLowerCase();
+            if (!(c === "" || c === "coa kosong")) return false;
+          }
+          if (hideZero && toNumber(row.Debit) === 0 && toNumber(row.Kredit) === 0) return false;
+          const ok = (val, q) => String(val || "").toLowerCase().includes(String(q || "").toLowerCase().trim());
+          return ok(row.COA, akun) && ok(row.Tanggal, tanggal) && ok(row.NoBukti, noBukti) && ok(row.Keterangan, ket);
+        });
+      }, [rows, from, to, akun, tanggal, noBukti, ket, coaKosong, hideZero]);
+
+      const totals = useMemo(() => {
+        let d = 0, k = 0;
+        filtered.forEach(r => { d += toNumber(r.Debit); k += toNumber(r.Kredit); });
+        return { debit: d, kredit: k };
+      }, [filtered]);
+
+      // Export ke Excel (CSV sederhana)
+      function exportToExcel(filteredRows, from, to) {
+        let csv = '';
+        filteredRows.forEach(tbl => {
+          csv += `BUKU BESAR\n${tbl.coa || '-'}\nPeriode: ${from || '-'} s.d ${to || '-'}\n`;
+          csv += 'Tanggal,No. Bukti,Keterangan,Ven/Customer,Debit,Kredit,Saldo\n';
+          tbl.rows.forEach(row => {
+            csv += [
+              row.Tanggal,
+              row.NoBukti,
+              row.Keterangan,
+              row.CustVendor,
+              Number(row.Debit).toLocaleString('id-ID', { minimumFractionDigits: 2 }),
+              Number(row.Kredit).toLocaleString('id-ID', { minimumFractionDigits: 2 }),
+              Number(row.Saldo).toLocaleString('id-ID', { minimumFractionDigits: 2 })
+            ].map(v => '"' + String(v).replace(/"/g, '""') + '"').join(',') + '\n';
+          });
+          csv += '\n';
+        });
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'buku_besar.csv';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }, 100);
+      }
+      return (
+        <div className="report-print-area panel">
+          <div className="panel-header">
+            <h2 className="title">General Ledger</h2>
+            <div className="subtitle">{loading ? "Loading..." : `${filtered.length} baris`}</div>
+          </div>
+          <div className="controls">
+            <select value={source} onChange={e => setSource(e.target.value)}>
+              <option value="full">full</option>
+              <option value="alias">alias</option>
+              <option value="kasbesar">kasbesar</option>
+              <option value="jurnal">jurnal</option>
+              <option value="backtest">backtest</option>
+              <option value="script">script</option>
+            </select>
+            <input type="date" value={from} onChange={e => setFrom(e.target.value)} />
+            <input type="date" value={to} onChange={e => setTo(e.target.value)} />
+            <input placeholder="Filter Akun" value={akun} onChange={e => setAkun(e.target.value)} />
+            <input placeholder="Filter Tanggal" value={tanggal} onChange={e => setTanggal(e.target.value)} />
+            <input placeholder="Filter No Bukti" value={noBukti} onChange={e => setNoBukti(e.target.value)} />
+            <input placeholder="Filter Keterangan" value={ket} onChange={e => setKet(e.target.value)} />
+            <label className="toggle"><input type="checkbox" checked={coaKosong} onChange={e => setCoaKosong(e.target.checked)} />COA kosong saja</label>
+            <label className="toggle"><input type="checkbox" checked={hideZero} onChange={e => setHideZero(e.target.checked)} />Sembunyikan Debit/Kredit 0</label>
+            <a className="btn" href={API.exportCsv(source, spreadsheetId)}>Export CSV</a>
+          </div>
+          <div className="summary">
+            <div>Total Debit: <strong>{fmt(totals.debit)}</strong></div>
+            <div>Total Kredit: <strong>{fmt(totals.kredit)}</strong></div>
+            <div className="muted">Source: {source}</div>
+          </div>
+          <div className="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Akun</th><th>Tanggal</th><th>No Bukti</th><th>Keterangan</th>
+                  <th className="num">Debit</th><th className="num">Kredit</th><th className="num">Saldo</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((row, idx) => (
+                  <tr key={`${row.NoBukti || "NB"}-${idx}`}>
+                    <td>{row.COA}</td>
+                    <td>{row.Tanggal}</td>
+                    <td>{row.NoBukti}</td>
+                    <td>{row.Keterangan}</td>
+                    <td className="num">{fmt(row.Debit)}</td>
+                    <td className="num">{fmt(row.Kredit)}</td>
+                    <td className="num">{fmt(row.Saldo)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="status">{error ? `Error: ${error}` : "Data berhasil dimuat."}</div>
+        </div>
+      );
+    }
+
+    function ComparePage({ spreadsheetId }) {
+      const [a, setA] = useState("full");
+      const [b, setB] = useState("script");
+      const { loading, error, data } = useFetchJson(API.compare(a, b, spreadsheetId));
+
+      return (
+        <div className="panel">
+          <div className="panel-header">
+            <h2 className="title">Compare Sources</h2>
+            <div className="subtitle">Bandingkan hasil 2 source backend</div>
+          </div>
+          <div className="controls">
+            <select value={a} onChange={e => setA(e.target.value)}>
+              <option>full</option><option>alias</option><option>kasbesar</option><option>jurnal</option><option>backtest</option><option>script</option>
+            </select>
+            <select value={b} onChange={e => setB(e.target.value)}>
+              <option>script</option><option>full</option><option>alias</option><option>kasbesar</option><option>jurnal</option><option>backtest</option>
+            </select>
+          </div>
+          {loading && <div className="status">Loading compare...</div>}
+          {error && <div className="status">Error: {error}</div>}
+          {data && (
+            <>
+              <div className="cards">
+                <div className="card"><div className="k">Rows A</div><div className="v">{data.rowsA}</div></div>
+                <div className="card"><div className="k">Rows B</div><div className="v">{data.rowsB}</div></div>
+                <div className="card"><div className="k">Only In A</div><div className="v">{data.onlyInA}</div></div>
+                <div className="card"><div className="k">Only In B</div><div className="v">{data.onlyInB}</div></div>
+              </div>
+              <div className="list">
+                <div className="list-item"><span>Amount Mismatch</span><strong>{data.amountMismatch}</strong></div>
+                <div className="list-item"><span>Source A</span><strong>{data.sourceA}</strong></div>
+                <div className="list-item"><span>Source B</span><strong>{data.sourceB}</strong></div>
+              </div>
+            </>
+          )}
+        </div>
+      );
+    }
+
+    function SheetsPage({ spreadsheetId }) {
+      const { loading, error, data } = useFetchJson(API.sheets(spreadsheetId));
+      const sheets = Array.isArray(data) ? data : [];
+      return (
+        <div className="panel">
+          <div className="panel-header">
+            <h2 className="title">Sheets Explorer</h2>
+            <div className="subtitle">Daftar sheet dari Google Spreadsheet</div>
+          </div>
+          {loading && <div className="status">Loading sheets...</div>}
+          {error && <div className="status">Error: {error}</div>}
+          {!loading && !error && (
+            <div className="list">
+              {sheets.map(s => (
+                <div className="list-item" key={s.sheetId}>
+                  <span><strong>{s.title}</strong> <span className="muted">index {s.index}</span></span>
+                  <span className="muted">{s.rowCount} rows x {s.colCount} cols</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    }
+    function BankTablesPage({ spreadsheetId }) {
+      const { loading: ls, error: es, data: ds } = useFetchJson(API.sheets(spreadsheetId));
+      const bankSheets = useMemo(() => {
+        const list = Array.isArray(ds) ? ds : [];
+        return list
+          .filter(s => /^bank\d{3}$/i.test(String(s.title || "").trim()))
+          .sort((a, b) => String(a.title).localeCompare(String(b.title)));
+      }, [ds]);
+
+      const [selected, setSelected] = useState("");
+      const [reloadKey, setReloadKey] = useState(0);
+      const [colFilters, setColFilters] = useState(Array.from({ length: 13 }, () => ""));
+      const [activeFilterCol, setActiveFilterCol] = useState(-1);
+      const [editingRowIndex, setEditingRowIndex] = useState(-1);
+      const [editingValues, setEditingValues] = useState(Array.from({ length: 13 }, () => ""));
+      const [isAddingRow, setIsAddingRow] = useState(false);
+      const [coaOptions, setCoaOptions] = useState([]);
+      const [saveStatus, setSaveStatus] = useState("");
+
+      useEffect(() => {
+        if (!selected && bankSheets.length > 0) {
+          setSelected(bankSheets[0].title);
+        } else if (selected && bankSheets.length > 0 && !bankSheets.some(s => s.title === selected)) {
+          setSelected(bankSheets[0].title);
+        }
+      }, [bankSheets, selected]);
+
+      const previewUrl = selected ? `${API.sheetPreview(selected, spreadsheetId, "A4:M")}&_r=${reloadKey}` : "";
+      const { loading, error, data } = useFetchJson(previewUrl);
+      const rows = useMemo(() => {
+        const r = data && Array.isArray(data.rows) ? data.rows : [];
+        return selected ? r : [];
+      }, [data, selected]);
+      const rowNumbers = useMemo(() => {
+        const rn = data && Array.isArray(data.rowNumbers) ? data.rowNumbers : [];
+        return selected ? rn : [];
+      }, [data, selected]);
+      const companyName = data && data.companyName ? data.companyName : "-";
+      const tableName = data && data.tableName ? data.tableName : selected || "-";
+
+      useEffect(() => {
+        setEditingRowIndex(-1);
+        setEditingValues(Array.from({ length: 13 }, () => ""));
+        setIsAddingRow(false);
+        setSaveStatus("");
+        setColFilters(Array.from({ length: 13 }, () => ""));
+        setActiveFilterCol(-1);
+      }, [selected, spreadsheetId]);
+
+      useEffect(() => {
+        let alive = true;
+        fetch(API.sheetPreview("master_coa", spreadsheetId, "B2:B"))
+          .then(r => {
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            return r.json();
+          })
+          .then(d => {
+            if (!alive) return;
+            const rows = Array.isArray(d?.rows) ? d.rows : [];
+            const options = Array.from(new Set(
+              rows.map(r => String(r?.[0] || "").trim()).filter(Boolean)
+            ));
+            setCoaOptions(options);
+          })
+          .catch(() => {
+            if (!alive) return;
+            setCoaOptions([]);
+          });
+        return () => { alive = false; };
+      }, [spreadsheetId]);
+
+      const maxCols = useMemo(() => {
+        let m = 0;
+        rows.forEach(r => { if (r.length > m) m = r.length; });
+        return Math.max(m, 13);
+      }, [rows]);
+
+      const headerRow = rows.length > 0 ? rows[0] : Array.from({ length: maxCols }, (_, i) => `Col ${i + 1}`);
+      const dataRows = rows.length > 1 ? rows.slice(1) : [];
+      const dataRowNumbers = rowNumbers.length > 1 ? rowNumbers.slice(1) : [];
+      const hasPreviewData = rows.length > 0;
+
+      const filteredRows = useMemo(() => {
+        return dataRows.filter((row) => {
+          for (let i = 0; i < maxCols; i++) {
+            const q = String(colFilters[i] || "").toLowerCase().trim();
+            if (!q) continue;
+            const cell = String(row[i] || "").toLowerCase();
+            if (!cell.includes(q)) return false;
+          }
+          return true;
+        });
+      }, [dataRows, colFilters, maxCols]);
+
+      function startEdit(filteredIndex) {
+        const row = filteredRows[filteredIndex] || [];
+        const originalIdx = dataRows.findIndex(r => r === row);
+        if (originalIdx < 0) return;
+        const values = Array.from({ length: 13 }, (_, i) => row[i] || "");
+        setEditingRowIndex(originalIdx);
+        setEditingValues(values);
+        setIsAddingRow(false);
+      }
+
+      function cancelEdit() {
+        setEditingRowIndex(-1);
+        setEditingValues(Array.from({ length: 13 }, () => ""));
+        setIsAddingRow(false);
+      }
+
+      function recomputeSaldo(values, sourceRows, rowIdxForEdit, addingRow) {
+        const next = [...values];
+        const dr = parseIDNumber(next[6]);
+        const cr = parseIDNumber(next[7]);
+        let prevSaldo = 0;
+        if (addingRow) {
+          const prev = sourceRows[sourceRows.length - 1];
+          prevSaldo = parseIDNumber(prev?.[8]);
+        } else if (rowIdxForEdit > 0) {
+          prevSaldo = parseIDNumber(sourceRows[rowIdxForEdit - 1]?.[8]);
+        }
+        const saldo = prevSaldo + dr - cr;
+        next[8] = formatIDNumber(saldo);
+        return next;
+      }
+
+      function startAddRow() {
+        const nextNoUrut = deriveNextNoUrut(dataRows);
+        const lastNoBukti = dataRows.length > 0 ? String(dataRows[dataRows.length - 1]?.[1] || "") : "";
+        const values = Array.from({ length: 13 }, () => "");
+        values[0] = String(nextNoUrut);
+        values[1] = deriveNextNoBukti(lastNoBukti, nextNoUrut);
+        values[2] = toSheetDate(new Date());
+        const withSaldo = recomputeSaldo(values, dataRows, -1, true);
+        setEditingValues(withSaldo);
+        setEditingRowIndex(-1);
+        setIsAddingRow(true);
+      }
+
+      async function saveEdit() {
+        const targetRowNumber = isAddingRow
+          ? ((rowNumbers[rowNumbers.length - 1] || 3) + 1)
+          : dataRowNumbers[editingRowIndex];
+        if (!targetRowNumber) return;
+
+        setSaveStatus("Menyimpan...");
+        try {
+          const res = await fetch(API.sheetUpdateRow, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              spreadsheetId,
+              sheet: selected,
+              rowNumber: targetRowNumber,
+              values: editingValues.map((v, idx) => {
+                if (idx === 2) return toSheetDate(v);
+                return v;
+              })
+            })
+          });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          setSaveStatus("Berhasil disimpan ke Google Sheet.");
+          cancelEdit();
+          setReloadKey(k => k + 1);
+        } catch (e) {
+          setSaveStatus(`Gagal simpan: ${e.message}`);
+        }
+      }
+
+      return (
+        <div className="panel">
+          <div className="panel-header">
+            <h2 className="title">Bank Tables</h2>
+            <div className="subtitle">Preview data table dari sheet Bank001-Bank010 (range A4:M)</div>
+          </div>
+          <div className="controls">
+            <select value={selected} onChange={e => setSelected(e.target.value)}>
+              {bankSheets.length === 0 && <option value="">Tidak ada sheet bank</option>}
+              {bankSheets.map(s => <option key={s.sheetId} value={s.title}>{s.title}</option>)}
+            </select>
+            <button className="btn" onClick={startAddRow} disabled={!selected}>Tambah Baris</button>
+          </div>
+          {(ls || loading) && !hasPreviewData && <div className="status">Loading bank tables...</div>}
+          {(es || error) && <div className="status">Error: {es || error}</div>}
+          {hasPreviewData && !es && !error && (
+            <>
+              <div className="info-strip">
+                <div><strong>Perusahaan:</strong> {companyName}</div>
+                <div><strong>Tabel:</strong> {tableName}</div>
+                {saveStatus && <div><strong>Status:</strong> {saveStatus}</div>}
+                {(ls || loading) && <div><strong>Sinkronisasi:</strong> Memperbarui data...</div>}
+              </div>
+              <div className="table-wrap table-scroll" onClick={() => setActiveFilterCol(-1)}>
+                <table className="bank-table">
+                  <thead>
+                    <tr>
+                      <th style={{ minWidth: "92px" }}>
+                        <div className="th-flex">
+                          <span>Aksi</span>
+                          <span className="filter-icon">v</span>
+                        </div>
+                      </th>
+                      {Array.from({ length: maxCols }).map((_, i) => (
+                        <th key={i}>
+                          <div className="th-flex">
+                            <span>{headerRow[i] || `Col ${i + 1}`}</span>
+                            <span
+                              className={`filter-icon ${activeFilterCol === i ? "active" : ""}`}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setActiveFilterCol(activeFilterCol === i ? -1 : i);
+                              }}
+                            >
+                              v
+                            </span>
+                            {activeFilterCol === i && (
+                              <div className="filter-popover" onClick={(e) => e.stopPropagation()}>
+                                <div className="label">FILTER {String(headerRow[i] || `COL ${i + 1}`).toUpperCase()}</div>
+                                <input
+                                  autoFocus
+                                  placeholder={`Cari ${headerRow[i] || `Col ${i + 1}`}`}
+                                  value={colFilters[i] || ""}
+                                  onChange={e => {
+                                    const next = [...colFilters];
+                                    next[i] = e.target.value;
+                                    setColFilters(next);
+                                  }}
+                                />
+                                <div className="actions">
+                                  <button
+                                    className="filter-link-btn danger"
+                                    onClick={() => {
+                                      const next = [...colFilters];
+                                      next[i] = "";
+                                      setColFilters(next);
+                                    }}
+                                  >
+                                    Reset
+                                  </button>
+                                  <button className="filter-link-btn" onClick={() => setActiveFilterCol(-1)}>Close</button>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredRows.map((row, filteredIndex) => {
+                      return (
+                        <tr key={filteredIndex}>
+                          <td>
+                            <button className="btn" onClick={() => startEdit(filteredIndex)}>Edit</button>
+                          </td>
+                          {Array.from({ length: maxCols }).map((_, j) => (
+                            <td key={j}>{row[j] || ""}</td>
+                          ))}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
+          {(editingRowIndex >= 0 || isAddingRow) && (
+            <div className="edit-modal-backdrop" onClick={cancelEdit}>
+              <div className="edit-modal" onClick={(e) => e.stopPropagation()}>
+                <div className="edit-modal-header">
+                  <strong>{isAddingRow ? "Tambah Row Baru" : `Edit Row ${dataRowNumbers[editingRowIndex] || "-"}`}</strong>
+                  <span>
+                    <button className="btn" onClick={saveEdit}>Save</button>
+                    {" "}
+                    <button className="btn" onClick={cancelEdit}>Cancel</button>
+                  </span>
+                </div>
+                <div className="edit-grid">
+                  {Array.from({ length: maxCols }).map((_, j) => (
+                    <div className="edit-field" key={j}>
+                      <label>{headerRow[j] || `Col ${j + 1}`}</label>
+                      {j === 2 ? (
+                        <input
+                          type="date"
+                          value={toDisplayDateInput(editingValues[j] || "")}
+                          onChange={e => {
+                            const next = [...editingValues];
+                            next[j] = toSheetDate(e.target.value);
+                            setEditingValues(next);
+                          }}
+                        />
+                      ) : j === 3 ? (
+                        <input
+                          list="coa-options-list"
+                          value={editingValues[j] || ""}
+                          onChange={e => {
+                            const next = [...editingValues];
+                            next[j] = e.target.value;
+                            setEditingValues(next);
+                          }}
+                        />
+                      ) : j === 8 ? (
+                        <input
+                          value={editingValues[j] || ""}
+                          disabled
+                        />
+                      ) : (
+                        <input
+                          value={editingValues[j] || ""}
+                          onChange={e => {
+                            const next = [...editingValues];
+                            next[j] = e.target.value;
+                            setEditingValues(next);
+                          }}
+                          onBlur={() => {
+                            if ([6, 7, 11].includes(j)) {
+                              const next = [...editingValues];
+                              next[j] = formatIDNumber(next[j]);
+                              const rowIdx = editingRowIndex;
+                              const withSaldo = recomputeSaldo(next, dataRows, rowIdx, isAddingRow);
+                              setEditingValues(withSaldo);
+                            } else if (j === 0 && isAddingRow) {
+                              const next = [...editingValues];
+                              const nUrut = Math.max(1, Math.floor(parseIDNumber(next[0])));
+                              next[0] = String(nUrut);
+                              const lastNoBukti = dataRows.length > 0 ? String(dataRows[dataRows.length - 1]?.[1] || "") : "";
+                              next[1] = deriveNextNoBukti(lastNoBukti, nUrut);
+                              setEditingValues(next);
+                            }
+                          }}
+                        />
+                      )}
+                    </div>
+                  ))}
+                  <datalist id="coa-options-list">
+                    {coaOptions.map((c, idx) => <option key={`${c}-${idx}`} value={c} />)}
+                  </datalist>
+                </div>
+              </div>
+            </div>
+          )}
+          <div className="status">{selected ? `Sheet: ${selected}` : "Pilih sheet bank"}</div>
+        </div>
+      );
+    }
+
+    function MasterCoaPage({ spreadsheetId }) {
+      const [reloadKey, setReloadKey] = useState(0);
+      const [colFilters, setColFilters] = useState(Array.from({ length: 13 }, () => ""));
+      const [activeFilterCol, setActiveFilterCol] = useState(-1);
+      const [editingRowIndex, setEditingRowIndex] = useState(-1);
+      const [editingValues, setEditingValues] = useState(Array.from({ length: 13 }, () => ""));
+      const [saveStatus, setSaveStatus] = useState("");
+
+      const previewUrl = `${API.sheetPreview("master_coa", spreadsheetId, "A1:M")}&_r=${reloadKey}`;
+      const { loading, error, data } = useFetchJson(previewUrl);
+
+      const rows = useMemo(() => {
+        const r = data && Array.isArray(data.rows) ? data.rows : [];
+        return r;
+      }, [data]);
+      const rowNumbers = useMemo(() => {
+        const rn = data && Array.isArray(data.rowNumbers) ? data.rowNumbers : [];
+        return rn;
+      }, [data]);
+
+      const maxCols = useMemo(() => {
+        let m = 0;
+        rows.forEach(r => { if (r.length > m) m = r.length; });
+        return Math.max(m, 13);
+      }, [rows]);
+
+      const headerRow = rows.length > 0 ? rows[0] : Array.from({ length: maxCols }, (_, i) => `Col ${i + 1}`);
+      const dataRows = rows.length > 1 ? rows.slice(1) : [];
+      const dataRowNumbers = rowNumbers.length > 1 ? rowNumbers.slice(1) : [];
+      const hasData = rows.length > 0;
+
+      const filteredRows = useMemo(() => {
+        return dataRows.filter((row) => {
+          for (let i = 0; i < maxCols; i++) {
+            const q = String(colFilters[i] || "").toLowerCase().trim();
+            if (!q) continue;
+            const cell = String(row[i] || "").toLowerCase();
+            if (!cell.includes(q)) return false;
+          }
+          return true;
+        });
+      }, [dataRows, colFilters, maxCols]);
+
+      function startEdit(filteredIndex) {
+        const row = filteredRows[filteredIndex] || [];
+        const originalIdx = dataRows.findIndex(r => r === row);
+        if (originalIdx < 0) return;
+        const values = Array.from({ length: 13 }, (_, i) => row[i] || "");
+        setEditingRowIndex(originalIdx);
+        setEditingValues(values);
+      }
+
+      function cancelEdit() {
+        setEditingRowIndex(-1);
+        setEditingValues(Array.from({ length: 13 }, () => ""));
+      }
+
+      async function saveEdit() {
+        if (editingRowIndex < 0) return;
+        const targetRowNumber = dataRowNumbers[editingRowIndex];
+        if (!targetRowNumber) return;
+
+        setSaveStatus("Menyimpan...");
+        try {
+          const res = await fetch(API.sheetUpdateRow, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              spreadsheetId,
+              sheet: "master_coa",
+              rowNumber: targetRowNumber,
+              values: editingValues
+            })
+          });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          setSaveStatus("Berhasil disimpan ke Google Sheet.");
+          cancelEdit();
+          setReloadKey(k => k + 1);
+        } catch (e) {
+          setSaveStatus(`Gagal simpan: ${e.message}`);
+        }
+      }
+
+      return (
+        <div className="panel">
+          <div className="panel-header">
+            <h2 className="title">Master COA</h2>
+            <div className="subtitle">Kelola data master akun (range A1:M)</div>
+          </div>
+          {(loading) && !hasData && <div className="status">Loading master COA...</div>}
+          {error && <div className="status">Error: {error}</div>}
+          {hasData && !error && (
+            <>
+              <div className="info-strip">
+                <div><strong>Sheet:</strong> master_coa</div>
+                {saveStatus && <div><strong>Status:</strong> {saveStatus}</div>}
+              </div>
+              <div className="table-wrap table-scroll" onClick={() => setActiveFilterCol(-1)}>
+                <table className="bank-table">
+                  <thead>
+                    <tr>
+                      <th style={{ minWidth: "92px" }}>
+                        <div className="th-flex"><span>Aksi</span><span className="filter-icon">▾</span></div>
+                      </th>
+                      {Array.from({ length: maxCols }).map((_, i) => (
+                        <th key={i}>
+                          <div className="th-flex">
+                            <span>{headerRow[i] || `Col ${i + 1}`}</span>
+                            <span
+                              className={`filter-icon ${activeFilterCol === i ? "active" : ""}`}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setActiveFilterCol(activeFilterCol === i ? -1 : i);
+                              }}
+                            >▾</span>
+                            {activeFilterCol === i && (
+                              <div className="filter-popover" onClick={(e) => e.stopPropagation()}>
+                                <div className="label">FILTER {String(headerRow[i] || `COL ${i + 1}`).toUpperCase()}</div>
+                                <input
+                                  autoFocus
+                                  placeholder={`Cari ${headerRow[i] || `Col ${i + 1}`}`}
+                                  value={colFilters[i] || ""}
+                                  onChange={e => {
+                                    const next = [...colFilters];
+                                    next[i] = e.target.value;
+                                    setColFilters(next);
+                                  }}
+                                />
+                                <div className="actions">
+                                  <button
+                                    className="filter-link-btn danger"
+                                    onClick={() => {
+                                      const next = [...colFilters];
+                                      next[i] = "";
+                                      setColFilters(next);
+                                    }}
+                                  >↻ Reset</button>
+                                  <button className="filter-link-btn" onClick={() => setActiveFilterCol(-1)}>Close</button>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredRows.map((row, filteredIndex) => (
+                      <tr key={filteredIndex}>
+                        <td><button className="btn" onClick={() => startEdit(filteredIndex)}>Edit</button></td>
+                        {Array.from({ length: maxCols }).map((_, j) => <td key={j}>{row[j] || ""}</td>)}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
+          {editingRowIndex >= 0 && (
+            <div className="edit-modal-backdrop" onClick={cancelEdit}>
+              <div className="edit-modal" onClick={(e) => e.stopPropagation()}>
+                <div className="edit-modal-header">
+                  <strong>Edit Master COA Row {dataRowNumbers[editingRowIndex] || "-"}</strong>
+                  <span>
+                    <button className="btn" onClick={saveEdit}>Save</button>
+                    {" "}
+                    <button className="btn" onClick={cancelEdit}>Cancel</button>
+                  </span>
+                </div>
+                <div className="edit-grid">
+                  {Array.from({ length: maxCols }).map((_, j) => (
+                    <div className="edit-field" key={j}>
+                      <label>{headerRow[j] || `Col ${j + 1}`}</label>
+                      <input
+                        value={editingValues[j] || ""}
+                        onChange={e => {
+                          const next = [...editingValues];
+                          next[j] = e.target.value;
+                          setEditingValues(next);
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+    function DashboardPage() {
+      return (
+        <div className="panel">
+          <div className="panel-header">
+            <h2 className="title">Dashboard</h2>
+            <div className="subtitle">Akses cepat ke GL, compare, dan daftar sheet</div>
+          </div>
+          <div className="list">
+            <div className="list-item"><span>General Ledger</span><span className="muted">Filter, total, export</span></div>
+            <div className="list-item"><span>Compare</span><span className="muted">Validasi full vs script</span></div>
+            <div className="list-item"><span>Sheets Explorer</span><span className="muted">Metadata sheet realtime</span></div>
+            <div className="list-item"><span>Reports</span><span className="muted">Siap untuk LR/Neraca</span></div>
+          </div>
+        </div>
+      );
+    }
+
+    function ReportsPage({ spreadsheetId }) {
+      const [showModal, setShowModal] = useState(false);
+      const [from, setFrom] = useState("");
+      const [to, setTo] = useState("");
+      const [coa, setCoa] = useState([]);
+      const [coaOptions, setCoaOptions] = useState([]);
+      const [filteredRows, setFilteredRows] = useState([]);
+      const [loading, setLoading] = useState(false);
+      const [error, setError] = useState("");
+
+      // Ambil daftar COA
+      useEffect(() => {
+        fetch(`/sheet/preview?sheet=master_coa&range=B2:B&spreadsheetId=${encodeURIComponent(spreadsheetId)}`)
+          .then(r => r.json())
+          .then(d => {
+            const rows = Array.isArray(d?.rows) ? d.rows : [];
+            const options = Array.from(new Set(rows.map(r => String(r?.[0] || "").trim()).filter(Boolean)));
+            setCoaOptions(options);
+          })
+          .catch(() => setCoaOptions([]));
+      }, [spreadsheetId]);
+
+      function openModal() {
+        setShowModal(true);
+      }
+      function closeModal() {
+        setShowModal(false);
+      }
+
+      async function handleFilter() {
+        setLoading(true);
+        setError("");
+        try {
+          // Ambil saldo awal dari master_coa
+          const resCoa = await fetch(`/sheet/preview?sheet=master_coa&range=B2:H&spreadsheetId=${encodeURIComponent(spreadsheetId)}`);
+          const dCoa = await resCoa.json();
+          const rowsCoa = Array.isArray(dCoa?.rows) ? dCoa.rows : [];
+          const resp = await fetch(`/bukubesar?source=full&spreadsheetId=${encodeURIComponent(spreadsheetId)}`);
+          let data = await resp.json();
+          let allRows = Array.isArray(data) ? data : Object.values(data).flat();
+          let selectedCoa = coa;
+          if (selectedCoa.length === 0 || selectedCoa.includes('__ALL__')) {
+            selectedCoa = coaOptions;
+          }
+          // Untuk setiap COA yang dipilih, proses data dan saldo awal
+          const allResults = [];
+          for (const coaVal of selectedCoa) {
+            let saldoAwal = 0;
+            const found = rowsCoa.find(r => String(r[0] || "").trim() === coaVal);
+            if (found && found[6]) {
+              saldoAwal = Number(String(found[6]).replace(/\./g, "").replace(",", ".")) || 0;
+            }
+            let rows = allRows.filter(row => String(row.COA || "").trim() === coaVal);
+            // Urutkan transaksi berdasarkan tanggal
+            rows.sort((a, b) => {
+              const da = parseDate(a.Tanggal);
+              const db = parseDate(b.Tanggal);
+              if (!da && !db) return 0;
+              if (!da) return 1;
+              if (!db) return -1;
+              return da - db;
+            });
+            // Pisahkan mutasi sebelum dan sesudah tanggal filter (from)
+            let saldo = saldoAwal;
+            let openingDate = from || (rows[0] && rows[0].Tanggal);
+            const mutasiSebelum = [];
+            const mutasiDalam = [];
+            const fromDate = from ? parseDate(from) : null;
+            const toDate = to ? parseDate(to) : null;
+            rows.forEach(row => {
+              const tgl = parseDate(row.Tanggal);
+              if (fromDate && tgl && tgl < fromDate) {
+                mutasiSebelum.push(row);
+              } else if (toDate && tgl && tgl > toDate) {
+                // Lewati transaksi di luar rentang to
+              } else {
+                mutasiDalam.push(row);
+              }
+            });
+            // Tambahkan mutasi sebelum tanggal filter ke saldo awal
+            mutasiSebelum.forEach(row => {
+              const debit = Number(row.Debit) || 0;
+              const kredit = Number(row.Kredit) || 0;
+              saldo += debit - kredit;
+            });
+            // Tampilkan opening balance pada tanggal filter
+            const result = [];
+            function toDDMMYYYY(raw) {
+              const d = parseDate(raw);
+              if (!d) return raw;
+              const dd = String(d.getDate()).padStart(2, '0');
+              const mm = String(d.getMonth() + 1).padStart(2, '0');
+              const yyyy = d.getFullYear();
+              return `${dd}/${mm}/${yyyy}`;
+            }
+            if (mutasiDalam.length > 0) {
+              result.push({
+                Tanggal: toDDMMYYYY(openingDate),
+                NoBukti: '',
+                Keterangan: 'Opening Balance',
+                CustVendor: '',
+                Debit: 0,
+                Kredit: 0,
+                Saldo: saldo,
+                COA: coaVal
+              });
+            }
+            mutasiDalam.forEach(row => {
+              const debit = Number(row.Debit) || 0;
+              const kredit = Number(row.Kredit) || 0;
+              saldo += debit - kredit;
+              result.push({ ...row, Saldo: saldo });
+            });
+            if (result.length > 0) {
+              allResults.push({ coa: coaVal, rows: result });
+            }
+          }
+          setFilteredRows(allResults);
+          setShowModal(false);
+        } catch (e) {
+          setError(e.message || "Gagal load data");
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      return (
+        <div className="panel">
+          <div className="panel-header">
+            <h2 className="title">Reports</h2>
+            <div className="subtitle">Laporan Buku Besar Per COA</div>
+          </div>
+          <div style={{ padding: 16 }}>
+            <button className="btn" onClick={openModal}>Filter Buku Besar Per COA</button>
+          </div>
+          {showModal && (
+            <div className="edit-modal-backdrop" onClick={closeModal}>
+              <div className="edit-modal" onClick={e => e.stopPropagation()}>
+                <div className="edit-modal-header">
+                  <strong>Filter Buku Besar</strong>
+                  <span><button className="btn" onClick={closeModal}>Tutup</button></span>
+                </div>
+                <div className="edit-grid">
+                  <div className="edit-field">
+                    <label>Dari Tanggal</label>
+                    <input type="date" value={from} onChange={e => setFrom(e.target.value)} />
+                  </div>
+                  <div className="edit-field">
+                    <label>Sampai Tanggal</label>
+                    <input type="date" value={to} onChange={e => setTo(e.target.value)} />
+                  </div>
+                  <div className="edit-field">
+                    <label>Pilih COA</label>
+                    <select multiple value={coa} onChange={e => {
+                      const opts = Array.from(e.target.selectedOptions).map(opt => opt.value);
+                      setCoa(opts);
+                    }} style={{ height: '120px' }}>
+                      <option value="__ALL__">-- Semua COA --</option>
+                      {coaOptions.map((c, idx) => <option key={c + idx} value={c}>{c}</option>)}
+                    </select>
+                    <div style={{ fontSize: '12px', color: '#64748b' }}>Tekan Ctrl (atau Cmd) untuk memilih lebih dari satu COA</div>
+                  </div>
+                  <div className="edit-field">
+                    <label>&nbsp;</label>
+                    <button className="btn" onClick={handleFilter}>Tampilkan</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {loading && <div className="status">Memuat data...</div>}
+          {error && <div className="status">Error: {error}</div>}
+          {Array.isArray(filteredRows) && filteredRows.length > 0 && (
+            <>
+              <div style={{ display: 'flex', gap: 8, margin: '8px 0 16px 0' }}>
+                <button className="btn" onClick={() => window.print()}>Print</button>
+                <button className="btn" onClick={() => exportToExcel(filteredRows, from, to)}>Export ke Excel</button>
+              </div>
+              {filteredRows.map((tbl, i) => (
+                <div key={tbl.coa + String(i)} style={{ marginBottom: 32 }} className="export-table-block print-area">
+                  <div style={{ padding: '8px 0 8px 0', textAlign: 'center' }}>
+                    <div style={{ fontWeight: 'bold', fontSize: '18px' }}>BUKU BESAR</div>
+                    <div style={{ fontWeight: 'bold', fontSize: '16px' }}>{tbl.coa || '-'}</div>
+                    <div style={{ color: '#334155', fontSize: '14px' }}>
+                      Periode: {from ? (() => { const d = parseDate(from); return d ? `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}` : from; })() : '-'}
+                      {' s.d '}
+                      {to ? (() => { const d = parseDate(to); return d ? `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}` : to; })() : '-'}
+                    </div>
+                  </div>
+                  <div className="table-wrap">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Tanggal</th>
+                          <th>No. Bukti</th>
+                          <th>Keterangan</th>
+                          <th>Ven/Customer</th>
+                          <th className="num">Debit</th>
+                          <th className="num">Kredit</th>
+                          <th className="num">Saldo</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {tbl.rows.map((row, idx) => (
+                          <tr key={row.NoBukti + idx}>
+                            <td>{row.Tanggal}</td>
+                            <td>{row.NoBukti}</td>
+                            <td>{row.Keterangan}</td>
+                            <td>{row.CustVendor}</td>
+                            <td className="num">{Number(row.Debit).toLocaleString("id-ID", { minimumFractionDigits: 2 })}</td>
+                            <td className="num">{Number(row.Kredit).toLocaleString("id-ID", { minimumFractionDigits: 2 })}</td>
+                            <td className="num">{Number(row.Saldo).toLocaleString("id-ID", { minimumFractionDigits: 2 })}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
+        </div>
+      );
+    }
+
+    function SettingsPage({ profiles, setProfiles, activeProfileId, setActiveProfileId }) {
+      const [name, setName] = useState("");
+      const [sheetId, setSheetId] = useState("");
+
+      function addProfile() {
+        const n = name.trim();
+        const s = sheetId.trim();
+        if (!n || !s) return;
+        const id = `p_${Date.now()}`;
+        const next = [...profiles, { id, name: n, spreadsheetId: s }];
+        setProfiles(next);
+        setActiveProfileId(id);
+        setName("");
+        setSheetId("");
+      }
+
+      function removeProfile(id) {
+        if (profiles.length <= 1) return;
+        const next = profiles.filter(p => p.id !== id);
+        setProfiles(next);
+        if (activeProfileId === id) {
+          setActiveProfileId(next[0].id);
+        }
+      }
+
+      return (
+        <div className="panel">
+          <div className="panel-header">
+            <h2 className="title">Settings</h2>
+            <div className="subtitle">Kelola daftar Spreadsheet ID untuk dropdown</div>
+          </div>
+          <div className="settings-form">
+            <input placeholder="Nama profile" value={name} onChange={e => setName(e.target.value)} />
+            <input placeholder="Spreadsheet ID" value={sheetId} onChange={e => setSheetId(e.target.value)} />
+            <button className="btn" onClick={addProfile}>Tambah</button>
+          </div>
+          <div className="list">
+            {profiles.map(p => (
+              <div key={p.id} className="list-item">
+                <span>
+                  <strong>{p.name}</strong>
+                  <span className="muted"> - {p.spreadsheetId}</span>
+                  {p.id === activeProfileId && <span className="muted"> (aktif)</span>}
+                </span>
+                <span>
+                  <button className="btn" onClick={() => setActiveProfileId(p.id)}>Pilih</button>
+                  {" "}
+                  <button className="btn" onClick={() => removeProfile(p.id)}>Hapus</button>
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function App() {
+      const [page, setPage] = useState("dashboard");
+      const [profiles, setProfiles] = useState(() => loadProfiles());
+      const [activeProfileId, setActiveProfileId] = useState(() => localStorage.getItem(STORAGE_ACTIVE_PROFILE) || "default");
+      const [sidebarVisible, setSidebarVisible] = useState(() => {
+        const v = localStorage.getItem("sidebarVisible");
+        return v === null ? true : v === "true";
+      });
+
+      useEffect(() => {
+        localStorage.setItem(STORAGE_PROFILES, JSON.stringify(profiles));
+      }, [profiles]);
+
+      useEffect(() => {
+        localStorage.setItem(STORAGE_ACTIVE_PROFILE, activeProfileId);
+      }, [activeProfileId]);
+      useEffect(() => {
+        localStorage.setItem("sidebarVisible", String(sidebarVisible));
+      }, [sidebarVisible]);
+
+      const activeProfile = useMemo(
+        () => profiles.find(p => p.id === activeProfileId) || profiles[0],
+        [profiles, activeProfileId]
+      );
+      const spreadsheetId = activeProfile ? activeProfile.spreadsheetId : DEFAULT_SPREADSHEET_ID;
+
+      return (
+        <div className={`layout ${sidebarVisible ? "" : "sidebar-hidden"}`}>
+          {sidebarVisible && <Sidebar page={page} setPage={setPage} />}
+          <main className="main">
+            <div className="topbar">
+              <button className="hamburger" onClick={() => setSidebarVisible(v => !v)} title="Toggle sidebar">☰</button>
+              <strong>Spreadsheet</strong>
+              <select value={activeProfileId} onChange={e => setActiveProfileId(e.target.value)}>
+                {profiles.map(p => (
+                  <option key={p.id} value={p.id}>{p.name}</option>
+                ))}
+              </select>
+              <button className="btn" onClick={() => setPage("settings")}>Settings</button>
+            </div>
+            {page === "dashboard" && <DashboardPage />}
+            {page === "gl" && <GLPage spreadsheetId={spreadsheetId} />}
+            {page === "compare" && <ComparePage spreadsheetId={spreadsheetId} />}
+            {page === "sheets" && <SheetsPage spreadsheetId={spreadsheetId} />}
+            {page === "bankTables" && <BankTablesPage spreadsheetId={spreadsheetId} />}
+            {page === "masterCoa" && <MasterCoaPage spreadsheetId={spreadsheetId} />}
+            {page === "reports" && <ReportsPage spreadsheetId={spreadsheetId} />}
+            {page === "settings" && (
+              <SettingsPage
+                profiles={profiles}
+                setProfiles={setProfiles}
+                activeProfileId={activeProfileId}
+                setActiveProfileId={setActiveProfileId}
+              />
+            )}
+          </main>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("app")).render(<App />);
+  </script>
+</body>
+
+</html>
